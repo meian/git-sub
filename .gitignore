@@ -1,0 +1,6 @@
+.git-alias
+.bash_completion
+.devcontainer/tmp/**
+.devcontainer/**/*.local.sh
+
+!.git-keep

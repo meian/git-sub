@@ -1,0 +1,4 @@
+[alias]
+        push-force =push --force-with-lease
+        lb = local-branch
+        scp = select-cherry-pick

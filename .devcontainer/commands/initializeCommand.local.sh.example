@@ -1,0 +1,25 @@
+#!/bin/bash -e 
+
+# initializeCommand をカスタマイズする場合は initializeCommand.local.sh を作成して実行権限を付与します
+# 引数としてdevcontainer.jsonで指定したユーザー名と環境変数ファイルのパスが渡されます
+
+user="$1"
+env="$2"
+
+log "Start custom initialize"
+log "  container user   : $user"
+log "  environment file : $env"
+
+# git関連の設定の環境変数ファイルへの追加
+
+# GITUSER としてgitにコミットするときのユーザー名を設定します
+echo "GITUSER=sampleuser" >> "$env"
+
+# GPG署名を利用しない場合は GITMAIL としてメールアドレスを設定します
+# echo "GITMAIL=sample@example.com" >> "$env"
+
+# GPG署名を利用する場合は GPGNAME としてGPGキーの名前を設定します
+echo "GPGNAME=sampleuser" >> "$env"
+
+# 環境変数はホストの環境変数を引き渡すようにしてもよいです
+# 例: echo "GITUSER=$GITUSER" >> "$env"

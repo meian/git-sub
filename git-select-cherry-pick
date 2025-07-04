@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# git cherry-pick with fzf
+#   指定したブランチ内のコミット内からfzfで選択して取り込む
+#   git select-cherry-pick [branch]
+#   ブランチを指定しない場合はブランチもfzfで選択する
+
+# completion: _git_branch
+# alias: scp : _git_branch
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+require_fzf
+
+branch="$1"
+if [ -z "$branch" ] ; then
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'All local branches ..'"
+    branch=$(git branch | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+fi
+if [ -z "$branch" ] ; then
+    exit
+fi
+
+filter="$1"
+if [ -n "$filter" ] ; then
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'Commits on $branch filtered by \"$filter\" ..'"
+else
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'Top 100 commits on $branch ..'"
+    filter=.
+fi
+
+commitsha=$(git log -100 -b $branch --oneline | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+if [ -n "$commitsha" ] ; then
+    git cherry-pick $commitsha
+fi

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+cat << EOF
+git-sub is installed: $DIR.
+Now added command is ...
+$(ls -p $DIR | grep -v / | grep -E '^git-' | grep -v subping | sed -E 's/-/ /' | awk '{ print "  " $0 }')
+EOF

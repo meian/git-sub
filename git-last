@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+CNT="$1"
+
+# オプションは ハイフン + 数字(0〜999)
+# 未指定時は -0 と同義
+if [ -z "$CNT" ] ; then
+    CNT=0
+elif expr "$CNT" : '^-[0-9]\{1,3\}$' > /dev/null ; then
+    CNT="${CNT/-/}"
+else
+    err "invalid args: $*"
+fi
+
+target() {
+    case "$1" in
+        "0") echo HEAD ;;
+        "1") echo HEAD~ ;;
+        * ) echo "HEAD~$1"
+    esac
+}
+
+TO=$(target $CNT)
+FROM=$(target "$(($CNT+1))")
+
+git diff "$FROM..$TO"

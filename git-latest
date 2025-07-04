@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# git latest
+#   指定したブランチの最新を取得する
+
+# completion: __git_complete_refs --remote=origin
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+branch=${1:?not set branch name}
+
+# gitつなげるか + リモート最新
+git fetch -p || exit 1
+
+# - による現在のブランチ指定をサポート
+if [ "$branch" = "-" ] ; then
+    branch=$(git branch --show-current)
+fi
+
+# 対象ブランチがなければ動かない
+git branch -r | awk '{ print $1 }' | grep -E "^origin/$branch$" > /dev/null || {
+    err not found current branch at remote origin: $branch
+    exit 2
+}
+
+# HEADからの差分があれば一旦stashする
+(git diff --name-only; git diff --cached --name-only) | grep . > /dev/null
+uncommitted=$?
+if [ $uncommitted -eq 0 ] ; then
+    git stash
+fi
+
+# pullだとずれていると使えないのでresetする
+# Note: 以前は git branch -D && git switch で強制的に最新を取得していたが、
+#   それだとブランチ履歴が死んで git switch - で戻れなくなるので途中で他ブランチにswitchをかけないように変更した
+git switch $branch && git reset --hard origin/$branch
+
+# stashしていたら戻す
+if [ $uncommitted -eq 0 ] ; then
+    git stash pop
+fi

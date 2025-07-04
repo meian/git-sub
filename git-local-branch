@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# git local branch with fzf
+#   ローカルにあるブランチをfzfで選択して切り替える
+
+# completion: _git_branch
+# alias: lb : _git_branch
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+require_fzf
+
+filter="$1"
+if [ -n "$filter" ] ; then
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'Local branches filtered by \"$filter\" ..'"
+else
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'All local branches ..'"
+    filter=.
+fi
+
+branch=$(git branch | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+if [ -n "$branch" ] ; then
+    git switch $branch
+fi

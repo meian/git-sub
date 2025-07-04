@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# script for customize local environment.
+
+user=${1:?not set user}
+
+# ホストから連携されるgpg署名に $user で指定された公開鍵があることを前提とする
+# また、その公開鍵にはメールアドレスが設定されていることを前提とする 
+signkey=$(gpg --list-keys --with-colons $GPG_NAME | grep '^pub' | cut -d: -f5)
+mail=$(gpg --list-keys --with-colons $signkey | awk -F: '/^uid:/ {print $10}' | cut -d'<' -f2 | cut -d'>' -f1)
+
+cmd="$(cat << CMD
+git config --global user.name $GPG_NAME
+git config --global user.email $mail
+git config --global user.signingkey $signkey
+git config --global commit.gpgsign true
+git config --global tag.gpgsign true
+
+curl https://github.com/web-flow.gpg | gpg --import
+CMD
+)"
+
+echo run postCommand.local.sh
+echo "$cmd"
+eval "$cmd"

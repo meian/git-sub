@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# git fixup with fzf
+#   fixupの対象をfzfで選択してコミットを作る
+#   対象ファイルのステージは事前に実行しておくこと
+
+DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
+. $DIR/common.sh || exit 1
+
+require_fzf
+
+cid=$(git log --oneline -100 | grep -v fixup | fzf | awk '{ print $1 }')
+[ -n "$cid" ] && git commit --fixup=$cid
