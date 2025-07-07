@@ -28,6 +28,9 @@ else
     log -w "GitHub CLI is not installed. Skipping authentication."
 fi
 
+# Gemini CLI用のワークスペースの作成
+mkdir -p "$DCDIR/tmp/.gemini/tmp"
+
 LSCRIPT="$CMDDIR/initializeCommand.local.sh"
 if [ -x "$LSCRIPT" ]; then
     log "Run local script: $(basename $LSCRIPT)"
