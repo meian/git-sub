@@ -15,9 +15,18 @@
 	"initializeCommand": "./.devcontainer/commands/initializeCommand.sh vscode",
 	"postCreateCommand": "./.devcontainer/commands/postCreateCommand.sh vscode",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+	"mounts": [
+		"source=node_global_modules_vol,target=/home/vscode/.global_node_modules,type=volume"
+	],
 	"workspaceFolder": "/workspace",
 	"remoteUser": "vscode",
 	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {}
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/node-asdf:0": {
+			"version": "latest"
+		}
 	}
 }

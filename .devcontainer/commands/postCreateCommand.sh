@@ -25,6 +25,12 @@ alias ll='ls -l --color=auto'
 EOF
 echo ". $aliases" >> $bashrc
 
+# nodeのグローバルモジュールのインストール先を変更
+sudo chown $user:$user /home/vscode/.global_node_modules
+npm config set prefix /home/$user/.global_node_modules
+echo "export PATH=\$PATH:/home/$user/.global_node_modules/bin" >> /home/$user/.bashrc
+export PATH=$PATH:/home/$user/.global_node_modules/bin
+
 # gitの補完とプロンプト
 cat <<'GIT' >> $bashrc
 source /usr/share/bash-completion/completions/git
