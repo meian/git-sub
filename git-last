@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
-. $DIR/common.sh || exit 1
+. "$DIR/common.sh"
 
 CNT="${1:-0}"
 
