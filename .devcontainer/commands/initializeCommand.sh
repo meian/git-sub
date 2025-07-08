@@ -16,8 +16,8 @@ env='./.devcontainer/tmp/.env.devcontainer'
 log "Create .env: $env"
 
 # GitHub CLI用の認証情報を取得
-if which gh &> /dev/null; then
-    GH_TOKEN=$(gh auth token)
+if command which gh &> /dev/null; then
+    GH_TOKEN=$(command gh auth token)
     if [ -z "$GH_TOKEN" ]; then
         log -w "Skip authentication because gh auth token is empty."
     else
@@ -29,11 +29,11 @@ else
 fi
 
 # Gemini CLI用のワークスペースの作成
-mkdir -p "$DCDIR/tmp/.gemini/tmp"
+command mkdir -p "$DCDIR/tmp/.gemini/tmp"
 
 LSCRIPT="$CMDDIR/initializeCommand.local.sh"
 if [ -x "$LSCRIPT" ]; then
-    log "Run local script: $(basename $LSCRIPT)"
+    log "Run local script: $(command basename $LSCRIPT)"
     $LSCRIPT "$user" "$env"
 else
     log -w "Local script is not found or not runnable: $LSCRIPT"

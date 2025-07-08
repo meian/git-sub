@@ -16,7 +16,7 @@ require_fzf
 branch="$1"
 if [ -z "$branch" ] ; then
     export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --header 'All local branches ..'"
-    branch=$(git branch | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+    branch=$(command git branch | command grep -E "$filter" | command fzf | command grep -v '\*' | command awk '{ print $1 }')
 fi
 if [ -z "$branch" ] ; then
     exit
@@ -30,7 +30,7 @@ else
     filter=.
 fi
 
-commitsha=$(git log -100 -b $branch --oneline | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+commitsha=$(command git log -100 -b $branch --oneline | command grep -E "$filter" | command fzf | command grep -v '\*' | command awk '{ print $1 }')
 if [ -n "$commitsha" ] ; then
-    git cherry-pick $commitsha
+    command git cherry-pick $commitsha
 fi

@@ -13,34 +13,34 @@ DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
 branch=${1:?not set branch name}
 
 # gitつなげるか + リモート最新
-git fetch -p || exit 1
+command git fetch -p || exit 1
 
 # - による現在のブランチ指定をサポート
 if [ "$branch" = "-" ] ; then
-    branch=$(git branch --show-current)
+    branch=$(command git branch --show-current)
 fi
 
 # 対象ブランチがなければ動かない
-git branch -r | awk '{ print $1 }' | grep -E "^origin/$branch$" > /dev/null || {
+command git branch -r | command awk '{ print $1 }' | command grep -E "^origin/$branch$" > /dev/null || {
     err not found current branch at remote origin: $branch
     exit 2
 }
 
 # HEADからの差分があれば一旦stashする
 set +e
-git status --porcelain | grep -E '^[ MARC][MDR]' > /dev/null
+command git status --porcelain | command grep -E '^[ MARC][MDR]' > /dev/null
 uncommitted=$?
 if [ $uncommitted -eq 0 ] ; then
-    git stash
+    command git stash
 fi
 set -e
 
 # pullだとずれていると使えないのでresetする
 # Note: 以前は git branch -D && git switch で強制的に最新を取得していたが、
 #   それだとブランチ履歴が死んで git switch - で戻れなくなるので途中で他ブランチにswitchをかけないように変更した
-git switch $branch && git reset --hard origin/$branch
+command git switch $branch && command git reset --hard origin/$branch
 
 # stashしていたら戻す
 if [ $uncommitted -eq 0 ] ; then
-    git stash pop
+    command git stash pop
 fi
