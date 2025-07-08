@@ -1,9 +1,10 @@
 #!/bin/bash
+set -euo pipefail
 
 DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
 . $DIR/common.sh || exit 1
 
-CNT="$1"
+CNT="${1:-}"
 
 # オプションは ハイフン + 数字(0〜999)
 # 未指定時は -0 と同義
