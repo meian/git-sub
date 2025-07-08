@@ -26,3 +26,38 @@ gitから補完を効かせるために、いずれのコマンドも `git-*` �
 - シェルスクリプトで適切なクォートを使用する
 - 絶対に必要でない限り `eval` の使用を避ける
   - ただし .devcontainer 内は開発環境構築用なので使用可能とする
+
+## gitの操作
+
+### コミットメッセージについて
+
+- ブランチ名の先頭の数字（例: 123-feature-x）をissue番号としてrefsに利用します。
+- 英語で記載してください。
+
+Prefix: message (refs #issue番号)
+
+ブランチを `gh issue develop` で作成するため、issue番号は現在のブランチ名を解析して最初ハイフンより前の数字を採用してください。\
+もしブランチが数字で始まらない場合は確認するので聞き返してください。\
+その結果としてissueに紐づかない場合は `(refs #no)` を省略してください。
+
+| Prefix    | 説明                                      |
+|-----------|-------------------------------------------|
+| Add       | 新機能の追加                              |
+| Change    | 仕様変更や大きなリファクタリング          |
+| Chore     | ビルドやCI、依存関係などの雑多な作業      |
+| Docs      | ドキュメントの追加・修正                  |
+| Fix       | バグ修正や不具合対応                      |
+| Refactor  | 内部構造の整理やリファクタリング          |
+| Remove    | 機能やコードの削除                        |
+| Test      | テストコードの追加・修正                  |
+| Update    | 機能や仕様の更新                          |
+
+#### 例
+
+Fix: panic on nil pointer dereference (refs #123)
+Add: support for multi-module workspace (refs #45)
+
+### Pull Requestの作成
+
+- Pull RequestのタイトルはコミットメッセージのPrefixをそのまま使用する
+- Pull Requestの説明は `.github/pull_request_template.md` を参照し、そこに記載されている指示に従うこと
