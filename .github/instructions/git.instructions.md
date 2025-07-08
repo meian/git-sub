@@ -29,7 +29,7 @@ git からの補完を効かせるために、サブコマンドとして提供�
 set -euo pipefail
 
 DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
-. $DIR/common.sh
+. "$DIR/common.sh"
 
 .... ここから個別の処理を書き始める
 ```
