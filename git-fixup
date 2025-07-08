@@ -9,5 +9,5 @@ DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
 
 require_fzf
 
-cid=$(git log --oneline -100 | grep -v fixup | fzf | awk '{ print $1 }')
-[ -n "$cid" ] && git commit --fixup=$cid
+cid=$(command git log --oneline -100 | command grep -v fixup | command fzf | command awk '{ print $1 }')
+[ -n "$cid" ] && command git commit --fixup=$cid

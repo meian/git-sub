@@ -19,7 +19,7 @@ else
     filter=.
 fi
 
-branch=$(git branch | grep -E "$filter" | fzf | grep -v '\*' | awk '{ print $1 }')
+branch=$(command git branch | command grep -E "$filter" | command fzf | command grep -v '\*' | command awk '{ print $1 }')
 if [ -n "$branch" ] ; then
-    git switch $branch
+    command git switch $branch
 fi

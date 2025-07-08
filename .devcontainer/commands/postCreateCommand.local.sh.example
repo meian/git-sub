@@ -9,7 +9,7 @@ log "Start custom post create"
 log "  container user : $user"
 
 # 以下のサンプルではコンテナに対してgit-subのインストールを行っています
-cmd="$(cat << CMD
+cmd="$(command cat << CMD
 (
     cd $DIR
     ./install.sh --bash
@@ -28,5 +28,5 @@ eval "$cmd"
 #     log "Gemini CLI is already installed."
 # else
 #     log "Gemini CLI is not installed. Installing..."
-#     npm install -g @google/gemini-cli
+#     command npm install -g @google/gemini-cli
 # fi

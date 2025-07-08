@@ -12,7 +12,7 @@ log() {
         shift
     fi
     msg="$*"
-    now=$(date +"%H:%M:%S")
+    now=$(command date +"%H:%M:%S")
     echo -e "${color}[${now}] ${msg}${reset}" >&2
 }
 

@@ -8,7 +8,7 @@ log() {
 export -f log
 
 logcat() {
-    cat - >&2
+    command cat - >&2
 }
 export -f logcat
 
@@ -18,7 +18,7 @@ err() {
 }
 export -f err
 
-git help > /dev/null 2>&1 || {
+command git help > /dev/null 2>&1 || {
     log 'git is not installed.'
     exit 1
 }
@@ -26,7 +26,7 @@ git help > /dev/null 2>&1 || {
 export FZF_DEFAULT_OPTS='--height 70% --border --reverse'
 
 require_fzf() {
-    fzf -h > /dev/null || {
+    command fzf -h > /dev/null || {
         log 'fzf is required.'
         exit 1
     }

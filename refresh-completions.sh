@@ -11,7 +11,7 @@ DIR=$(cd $(dirname ${BASH_SOURCE}); pwd)
 
 CMPL=$DIR/.bash_completion
 
-cat << EOF > $CMPL
+command cat << EOF > $CMPL
 #/bin/bash
 
 if [[ \$SHELL =~ "bash" ]] ; then
@@ -43,9 +43,9 @@ EOF
 (
     cd $DIR
 
-    grep '# completion: ' git* | sed -E 's/# completion://; s/\s*:\s*/ /g' | while read cmd call ; do
+    command grep '# completion: ' git* | command sed -E 's/# completion://; s/\s*:\s*/ /g' | while read cmd call ; do
         func="_${cmd//-/_}"
-        cat << FUNC
+        command cat << FUNC
 
 # for "${cmd/-/ }"
 $func() {
@@ -54,9 +54,9 @@ $func() {
 FUNC
     done >> $CMPL
 
-    grep '# alias: ' git* | sed -E 's/.+# alias://; s/\s*:\s*/ /g' | while read alias call ; do
+    command grep '# alias: ' git* | command sed -E 's/.+# alias://; s/\s*:\s*/ /g' | while read alias call ; do
         func="_git_${alias//-/_}"
-        cat << ALIAS
+        command cat << ALIAS
 
 # for "git $alias"
 $func() {
@@ -66,4 +66,4 @@ ALIAS
     done >> $CMPL
 )
 
-chmod +x $CMPL
+command chmod +x $CMPL

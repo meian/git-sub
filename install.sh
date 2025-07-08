@@ -20,7 +20,7 @@ mode="${1:-}"
 [ -n "$mode" ] || usage
 
 if [ "$mode" == "--auto" ] ; then
-    echo $SHELL | grep zsh > /dev/null && mode="--zsh" || mode="--bash"
+    echo $SHELL | command grep zsh > /dev/null && mode="--zsh" || mode="--bash"
     logcat << EOE
 mode = $mode
 To install to selected shell, use args "--bash" or "--zsh"
@@ -34,9 +34,9 @@ fi
 }
 
 if [ "${2:-}" != "-f" ] ; then
-    if git subping > /dev/null 2>&1 ; then
+    if command git subping > /dev/null 2>&1 ; then
         log 'Already installed.'
-        git subping >&2
+        command git subping >&2
         exit 0
     fi
 fi
@@ -48,7 +48,7 @@ fi
 
 rc="${HOME:?not found home dir.}/$rc"
 if [ -f "$rc" ] ; then
-    if grep "$DIR" $rc > /dev/null ; then
+    if command grep "$DIR" $rc > /dev/null ; then
         log "already set PATH? try command"
         log "  source . $rc"
         exit 3
@@ -56,7 +56,7 @@ if [ -f "$rc" ] ; then
 fi
 
 CMPL="$DIR/.bash_completion"
-cat << EOF >> $rc
+command cat << EOF >> $rc
 export PATH=\$PATH:$DIR
 if [ -x "$CMPL" ] ; then
     . $CMPL
