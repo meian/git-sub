@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash -eu
+
+set -o pipefail
 
 # git latest
 #   指定したブランチの最新を取得する
@@ -25,11 +27,13 @@ git branch -r | awk '{ print $1 }' | grep -E "^origin/$branch$" > /dev/null || {
 }
 
 # HEADからの差分があれば一旦stashする
-(git diff --name-only; git diff --cached --name-only) | grep . > /dev/null
+set +e
+git status --porcelain | grep -E '^[ MARC][MDR]' > /dev/null
 uncommitted=$?
 if [ $uncommitted -eq 0 ] ; then
     git stash
 fi
+set -e
 
 # pullだとずれていると使えないのでresetする
 # Note: 以前は git branch -D && git switch で強制的に最新を取得していたが、
