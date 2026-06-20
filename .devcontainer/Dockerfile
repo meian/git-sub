@@ -1,5 +1,5 @@
 # ツール類の取得
-FROM alpine:3.22.0 AS tool-builder
+FROM alpine:3.24.1 AS tool-builder
 
 RUN apk add --no-cache curl tar
 RUN mkdir -p /tmp/ulb
